@@ -16,9 +16,17 @@ inquirer
     },
   ])
   .then((answers) => {
-    var qr_code = qr.image(answers.url, { type: "png" });
+    const url = answers.url;
+    var qr_code = qr.image(url, { type: "png" });
     qr_code.pipe(fs.createWriteStream("qr-code.png"));
-    console.log("QR code saved as qr-code.png");
+
+    fs.writeFile("message.txt", url, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("URL saved to url");
+    });
   })
   .catch((error) => {
     if (error.isTtyError) {
